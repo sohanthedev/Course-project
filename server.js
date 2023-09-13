@@ -28,9 +28,12 @@ async function main() {
   app.use("/api/auth/",authRoute)
   app.use("/api/users/",userRoute)
 
-  app.get("/test",(req,res)=>{
-    res.send("hello")
-})
+ app.use((err,req,res,next)=>{
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Something went wrong !";
+
+  return res.status(errorStatus).send(errorMessage)
+ })
 
 app.listen(5000, ()=>{
     console.log("Backend server is running")
